@@ -15,3 +15,12 @@ variables:
 steps:
 - script: dotnet build TestApp/TestApp.csproj --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+  displayName: Publish project
+
+- task: PublishPipelineArtifact@1
+  displayName: Upload Artifact
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
